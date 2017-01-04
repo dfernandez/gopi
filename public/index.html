@@ -7,7 +7,7 @@
         var connection;
 
         function connect() {
-            connection = new WebSocket('ws://localhost:8080/ws');
+            connection = new WebSocket('ws://192.168.1.33:8080/ws');
 
             // Log errors
             connection.onerror = function (error) {
@@ -16,12 +16,21 @@
 
             // Log messages from the server
             connection.onmessage = function (e) {
+                message = jQuery.parseJSON(e.data)
                 switch (true) {
-                    case e.data == "button_timer_off":
+                    case message.cmd == "button_timer_off":
                         $('#button').html('OFF')
                         break;
+                    case message.cmd == "system_status":
+                        $('#host').html(message.host)
+                        $('#arch').html(message.arch)
+                        $('#os').html(message.os)
+                        $('#mem').html(Math.round(message.mem / 1024 / 1024 * 100)/100 + "MB")
+                        $('#time').html(message.now)
+                        $('#uptime').html(message.uptime)
+                        break;
                     default:
-                        console.log('Server: ' + e.data);
+                        console.log(message);
                 }
             };
         }
@@ -36,4 +45,8 @@
 <body onload="connect()">
     <button id="button" onclick="button_timer_on()">OFF</button>
 </body>
+<div>Server: <span id="host">unknown</span> (<span id="arch">arch</span>/<span id="os">os</span>)</div>
+<div>Server time: <span id="time">unknown</span></div>
+<div>Server uptime: <span id="uptime">unknown</span></div>
+<div>Allocated mem: <span id="mem">unknown</span></div>
 </html>
