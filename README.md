@@ -1,2 +1,2 @@
 # gopi
-Golang webserver running on Raspbian
+Interacts with Raspberry GPIO using a web interface
