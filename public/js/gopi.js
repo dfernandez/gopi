@@ -1,7 +1,7 @@
 var connection;
 
 function connect() {
-    connection = new WebSocket('ws://localhost:8000/ws');
+    connection = new WebSocket('ws://192.168.1.33:8000/ws');
 
     // Log errors
     connection.onerror = function (error) {

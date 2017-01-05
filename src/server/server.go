@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
+	"gobot.io/x/gobot/platforms/raspi"
 )
 
 type Server struct {
@@ -29,6 +30,7 @@ func NewServer() *Server {
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var err error
 
+	// Creates websocket connection
 	conn, err := s.upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -36,7 +38,14 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	s.conn = NewConnection(conn)
+	// Creates device connection
+	raspi := raspi.NewAdaptor()
+	err = raspi.Connect()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	s.conn = NewConnection(conn, raspi)
 
 	for {
 		_, message, err := s.conn.Read()

@@ -1,5 +1,5 @@
 package config
 
 // Server address
-var SrvAddr = ":8000"
+var SrvAddr = "192.168.1.33:8000"
 

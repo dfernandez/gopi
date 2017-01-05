@@ -5,16 +5,19 @@ import (
 	"sync"
 
 	"github.com/gorilla/websocket"
+	"gobot.io/x/gobot/platforms/raspi"
 )
 
 type Connection struct {
+	Raspi *raspi.Adaptor
 	conn *websocket.Conn
 	read sync.Mutex
 	write sync.Mutex
 }
 
-func NewConnection(conn *websocket.Conn) *Connection {
+func NewConnection(conn *websocket.Conn, raspi *raspi.Adaptor) *Connection {
 	return &Connection{
+		Raspi: raspi,
 		conn: conn,
 		read: sync.Mutex{},
 		write: sync.Mutex{},
