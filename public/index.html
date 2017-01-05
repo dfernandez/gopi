@@ -7,11 +7,11 @@
         var connection;
 
         function connect() {
-            connection = new WebSocket('ws://192.168.1.33:8080/ws');
+            connection = new WebSocket('ws://localhost:8000/ws');
 
             // Log errors
             connection.onerror = function (error) {
-                console.log('WebSocket Error ' + error);
+                console.log(error);
             };
 
             // Log messages from the server
@@ -43,10 +43,11 @@
     </script>
 </head>
 <body onload="connect()">
-    <button id="button" onclick="button_timer_on()">OFF</button>
-</body>
+<button id="button" onclick="button_timer_on()">OFF</button>
+<hr />
 <div>Server: <span id="host">unknown</span> (<span id="arch">arch</span>/<span id="os">os</span>)</div>
 <div>Server time: <span id="time">unknown</span></div>
 <div>Server uptime: <span id="uptime">unknown</span></div>
 <div>Allocated mem: <span id="mem">unknown</span></div>
+</body>
 </html>
