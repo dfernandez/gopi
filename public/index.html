@@ -1,53 +1,45 @@
 <!doctype html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>web sockets</title>
-    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script>
-        var connection;
 
-        function connect() {
-            connection = new WebSocket('ws://localhost:8000/ws');
-
-            // Log errors
-            connection.onerror = function (error) {
-                console.log(error);
-            };
-
-            // Log messages from the server
-            connection.onmessage = function (e) {
-                message = jQuery.parseJSON(e.data)
-                switch (true) {
-                    case message.cmd == "button_timer_off":
-                        $('#button').html('OFF')
-                        break;
-                    case message.cmd == "system_status":
-                        $('#host').html(message.host)
-                        $('#arch').html(message.arch)
-                        $('#os').html(message.os)
-                        $('#mem').html(Math.round(message.mem / 1024 / 1024 * 100)/100 + "MB")
-                        $('#time').html(message.now)
-                        $('#uptime').html(message.uptime)
-                        break;
-                    default:
-                        console.log(message);
-                }
-            };
-        }
-
-        function button_timer_on() {
-            connection.send('button_timer_on')
-
-            $('#button').html('ON')
-        }
-    </script>
+    <link rel="stylesheet" href="/css/gopi.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body onload="connect()">
-<button id="button" onclick="button_timer_on()">OFF</button>
-<hr />
-<div>Server: <span id="host">unknown</span> (<span id="arch">arch</span>/<span id="os">os</span>)</div>
-<div>Server time: <span id="time">unknown</span></div>
-<div>Server uptime: <span id="uptime">unknown</span></div>
-<div>Allocated mem: <span id="mem">unknown</span></div>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Gopi</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Dashboard</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="starter-template">
+        <button id="toggle_lights_button" type="button" class="btn btn-danger btn-lg"><i class="fa fa-play" style="font-size:16px"></i></button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/gopi.js"></script>
 </body>
 </html>
